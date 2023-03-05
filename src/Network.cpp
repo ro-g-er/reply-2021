@@ -4,6 +4,22 @@
 #include <sstream>
 #include "Network.h"
 
+void Network::placeAntennas() {
+    for (auto &a: antennas) {
+        for (auto b: buildings) {
+            for (int i{}; i < grid.first; i++) {
+                for (int j{}; j < grid.second; j++) {
+                    int score = a.getConnectionSpeed() * b.getConnectionSpeedWeight() - b.getLatencyWeight() * abs((b.getPositionGrid().first - i) + (b.getPositionGrid().second - j) );
+                    if (score > a.getMaxScore()) {
+                        a.setMaxScore(score);
+                        a.setPosition(std::make_pair(i, j));
+                    }
+                }
+            }
+        }
+    }
+}
+
 void Network::read(const std::string &nameFile) {
     std::ifstream myFile;
     myFile.open(nameFile, std::ios::in);
@@ -56,6 +72,8 @@ void Network::print() {
     for (auto a: antennas) {
         std::cout << "Range of antenna: " << a.getRange() << std::endl;
         std::cout << "Connection Speed: " << a.getConnectionSpeed() << std::endl;
+        std::cout << "Position: " << a.getPosition().first << ", " << a.getPosition().second << std::endl;
+        std::cout << "Maximum score: " << a.getMaxScore() << std::endl;
     }
 }
 

@@ -15,7 +15,7 @@ public:
     void read(const std::string &nameFile);
     const std::pair<int, int> &getGrid() const;
     void print();
-
-    };
+    void placeAntennas();
+};
 
 #endif //REPLY_2021_NETWORK_H
